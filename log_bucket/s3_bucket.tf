@@ -30,11 +30,14 @@ resource "aws_s3_bucket" "logs" {
     }
   }
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm     = var.sse_algorithm
-        kms_master_key_id = var.sse_kms_master_key_id
+  dynamic "server_side_encryption_configuration" {
+    for_each = local.sse_settings
+    content {
+      rule {
+        apply_server_side_encryption_by_default {
+          sse_algorithm     = server_side_encryption_configuration.value.sse_algorithm
+          kms_master_key_id = server_side_encryption_configuration.value.kms_master_key_id
+        }
       }
     }
   }

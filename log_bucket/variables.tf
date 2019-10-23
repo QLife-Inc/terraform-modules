@@ -55,3 +55,10 @@ variable "sse_kms_master_key_id" {
   description = "Server Side Encryption を有効にする場合に利用する KMS マスターキーの ID"
   default     = null
 }
+
+locals {
+  sse_settings = var.sse_kms_master_key_id != null ? [{
+    sse_algorithm     = var.sse_algorithm
+    kms_master_key_id = var.sse_kms_master_key_id
+  }] : []
+}
