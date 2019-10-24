@@ -29,7 +29,7 @@ variable "lifecycle_rules" {
     id                       = string
     enabled                  = bool
     prefix                   = string
-    tags                     = map(string)
+    filter_tags              = map(string)
     standard_transition_days = number
     glacier_transition_days  = number
     expiration_days          = number
@@ -39,7 +39,7 @@ variable "lifecycle_rules" {
     id                       = "ALL"
     enabled                  = true
     prefix                   = ""
-    tags                     = null
+    filter_tags              = null
     standard_transition_days = 30
     glacier_transition_days  = 365 * 2
     expiration_days          = 365 * 5

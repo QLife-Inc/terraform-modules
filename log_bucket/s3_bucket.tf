@@ -15,7 +15,7 @@ resource "aws_s3_bucket" "logs" {
       id      = lifecycle_rule.value.id
       enabled = lifecycle_rule.value.enabled
       prefix  = lifecycle_rule.value.prefix
-      tags    = lifecycle_rule.value.tags != null ? lifecycle_rule.value.tags : var.bucket_tags
+      tags    = lifecycle_rule.value.filter_tags
       transition {
         days          = lifecycle_rule.value.standard_transition_days
         storage_class = "STANDARD_IA"
