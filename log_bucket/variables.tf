@@ -26,23 +26,27 @@ variable "force_destroy" {
 
 variable "lifecycle_rules" {
   type = list(object({
-    id                       = string
-    enabled                  = bool
-    prefix                   = string
-    filter_tags              = map(string)
-    standard_transition_days = number
-    glacier_transition_days  = number
-    expiration_days          = number
+    id          = string
+    enabled     = bool
+    prefix      = string
+    filter_tags = map(string)
+    transitions = list(object({
+      storage_class = string
+      days          = number
+    }))
+    expiration_days = number
   }))
   description = "ログ格納バケットに適用するライフサイクルルールのリスト"
   default = [{
-    id                       = "ALL"
-    enabled                  = true
-    prefix                   = ""
-    filter_tags              = null
-    standard_transition_days = 30
-    glacier_transition_days  = 365 * 2
-    expiration_days          = 365 * 5
+    id          = "ALL"
+    enabled     = true
+    prefix      = ""
+    filter_tags = null
+    transitions = [{
+      storage_class = "STANDARD_IA"
+      days          = 30
+    }]
+    expiration_days = 365 * 5
   }]
 }
 

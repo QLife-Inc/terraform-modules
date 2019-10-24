@@ -16,14 +16,15 @@ resource "aws_s3_bucket" "logs" {
       enabled = lifecycle_rule.value.enabled
       prefix  = lifecycle_rule.value.prefix
       tags    = lifecycle_rule.value.filter_tags
-      transition {
-        days          = lifecycle_rule.value.standard_transition_days
-        storage_class = "STANDARD_IA"
+
+      dynamic "transition" {
+        for_each = lifecycle_rule.value.transitions
+        content {
+          storage_class = transition.value.storage_class
+          days          = transition.value.days
+        }
       }
-      transition {
-        days          = lifecycle_rule.value.glacier_transition_days
-        storage_class = "GLACIER"
-      }
+
       expiration {
         days = lifecycle_rule.value.expiration_days
       }
