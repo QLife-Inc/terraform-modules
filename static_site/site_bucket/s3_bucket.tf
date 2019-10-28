@@ -11,9 +11,13 @@ resource "aws_s3_bucket" "site_bucket" {
   website {
     index_document = var.index_document
     error_document = var.error_document
-    routing_rules = jsonencode([for rule in var.routing_rules : {
-      Condition = rule.condition
-      Redirect  = rule.redirect
-    }])
+    routing_rules  = local.routing_rules
   }
+}
+
+locals {
+  routing_rules = length(var.routing_rules) > 0 ? jsonencode([for rule in var.routing_rules : {
+    Condition = rule.condition
+    Redirect  = rule.redirect
+  }]) : null
 }
