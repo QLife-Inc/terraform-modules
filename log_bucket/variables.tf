@@ -62,7 +62,7 @@ variable "sse_kms_master_key_id" {
 
 locals {
   sse_settings = var.sse_kms_master_key_id != null ? [{
-    sse_algorithm     = var.sse_algorithm
     kms_master_key_id = var.sse_kms_master_key_id
+    sse_algorithm     = coalesce(var.sse_algorithm, "aws:kms")
   }] : []
 }

@@ -17,3 +17,20 @@ variable "force_destroy" {
   description = "オブジェクトが存在する場合に強制的に削除するかどうか (デフォルト: true)"
   default     = true
 }
+
+variable "index_document" {
+  default = "index.html"
+}
+
+variable "error_document" {
+  default = null
+}
+
+variable "routing_rules" {
+  type = list(object({
+    condition = map(string)
+    redirect  = map(string)
+  }))
+  description = "S3 バケットに設定するリダイレクトルール"
+  default     = []
+}
