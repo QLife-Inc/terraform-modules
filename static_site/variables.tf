@@ -15,6 +15,12 @@ variable "site_bucket_tags" {
   default     = {}
 }
 
+variable "site_bucket_origins" {
+  type        = list(string)
+  description = "CORS 許可オリジンのリスト"
+  default     = ["*"]
+}
+
 variable "site_bucket_force_destroy" {
   description = "静的サイト格納用の S3 バケットにオブジェクトが存在する場合に強制的に削除するかどうか (デフォルト: true)"
   default     = true

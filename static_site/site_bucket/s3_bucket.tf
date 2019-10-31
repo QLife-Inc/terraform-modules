@@ -13,6 +13,13 @@ resource "aws_s3_bucket" "site_bucket" {
     error_document = var.error_document
     routing_rules  = local.routing_rules
   }
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET"]
+    allowed_origins = var.cors_allowed_origins
+    max_age_seconds = 3000
+  }
 }
 
 locals {

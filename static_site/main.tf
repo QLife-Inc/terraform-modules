@@ -1,9 +1,10 @@
 module "site_bucket" {
-  source        = "./site_bucket"
-  aws_region    = var.site_bucket_region
-  bucket_name   = var.site_bucket_name
-  bucket_tags   = var.site_bucket_tags
-  force_destroy = var.site_bucket_force_destroy
+  source               = "./site_bucket"
+  aws_region           = var.site_bucket_region
+  bucket_name          = var.site_bucket_name
+  bucket_tags          = var.site_bucket_tags
+  cors_allowed_origins = var.site_bucket_origins
+  force_destroy        = var.site_bucket_force_destroy
 }
 
 module "edge_function_role" {

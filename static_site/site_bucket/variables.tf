@@ -13,6 +13,12 @@ variable "bucket_tags" {
   default     = {}
 }
 
+variable "cors_allowed_origins" {
+  type        = list(string)
+  description = "CORS で許可するドメインのリスト"
+  default     = ["*"]
+}
+
 variable "force_destroy" {
   description = "オブジェクトが存在する場合に強制的に削除するかどうか (デフォルト: true)"
   default     = true
