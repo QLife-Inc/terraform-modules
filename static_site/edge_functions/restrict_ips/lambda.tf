@@ -6,7 +6,14 @@ provider "aws" {
 resource "aws_cloudwatch_log_group" "restrict_ips" {
   count             = length(var.allowed_ip_addresses) > 0 ? 1 : 0
   provider          = "aws.edge"
-  name              = "/aws/lambda/${var.function_name}"
+  name              = "/aws/lambda/us-east-1.${var.function_name}"
+  retention_in_days = 7
+  tags              = var.function_tags
+}
+
+resource "aws_cloudwatch_log_group" "restrict_ips_default" {
+  count             = length(var.allowed_ip_addresses) > 0 ? 1 : 0
+  name              = "/aws/lambda/us-east-1.${var.function_name}"
   retention_in_days = 7
   tags              = var.function_tags
 }
@@ -25,10 +32,6 @@ resource "aws_lambda_function" "restrict_ips" {
   memory_size      = 128
   timeout          = 3
   tags             = var.function_tags
-
-  lifecycle {
-    ignore_changes = ["filename"]
-  }
 }
 
 resource "aws_lambda_permission" "allow_cloudfront" {

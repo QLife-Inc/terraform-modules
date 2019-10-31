@@ -5,7 +5,14 @@ provider "aws" {
 
 resource "aws_cloudwatch_log_group" "directory_index" {
   provider          = "aws.edge"
-  name              = "/aws/lambda/${var.function_name}"
+  name              = "/aws/lambda/us-east-1.${var.function_name}"
+  retention_in_days = 7
+  tags              = var.function_tags
+}
+
+resource "aws_cloudwatch_log_group" "directory_index_default" {
+  provider          = "aws.edge"
+  name              = "/aws/lambda/us-east-1.${var.function_name}"
   retention_in_days = 7
   tags              = var.function_tags
 }
@@ -23,10 +30,6 @@ resource "aws_lambda_function" "directory_index" {
   memory_size      = 128
   timeout          = 3
   tags             = var.function_tags
-
-  lifecycle {
-    ignore_changes = ["filename"]
-  }
 }
 
 resource "aws_lambda_permission" "allow_cloudfront" {
@@ -40,5 +43,5 @@ resource "aws_lambda_permission" "allow_cloudfront" {
 data "archive_file" "lambda_source" {
   type        = "zip"
   source_file = "${path.module}/index.js"
-  output_path = "${path.module}/index.zip"
+  output_path = "${path.root}/directory_index.zip"
 }

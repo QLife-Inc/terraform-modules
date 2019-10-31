@@ -7,7 +7,7 @@ data "template_file" "lambda_source" {
 
 data "archive_file" "lambda_source" {
   type        = "zip"
-  output_path = "${path.module}/index.zip"
+  output_path = "${path.root}/restrict_ips.zip"
 
   source {
     content  = data.template_file.lambda_source.rendered
