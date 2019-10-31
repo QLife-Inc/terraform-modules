@@ -3,20 +3,18 @@ provider "aws" {
   alias  = "edge"
 }
 
-resource "aws_cloudwatch_log_group" "restrict_ips" {
-  count             = length(var.allowed_ip_addresses) > 0 ? 1 : 0
+resource "aws_cloudwatch_log_group" "directory_index" {
   provider          = "aws.edge"
   name              = "/aws/lambda/${var.function_name}"
   retention_in_days = 7
   tags              = var.function_tags
 }
 
-resource "aws_lambda_function" "restrict_ips" {
-  count            = length(var.allowed_ip_addresses) > 0 ? 1 : 0
+resource "aws_lambda_function" "directory_index" {
   provider         = "aws.edge"
-  depends_on       = [aws_cloudwatch_log_group.restrict_ips]
+  depends_on       = [aws_cloudwatch_log_group.directory_index]
   function_name    = var.function_name
-  role             = aws_iam_role.lambda_edge[count.index].arn
+  role             = var.function_role_arn
   filename         = data.archive_file.lambda_source.output_path
   source_code_hash = data.archive_file.lambda_source.output_base64sha256
   handler          = "index.handler"
@@ -32,10 +30,15 @@ resource "aws_lambda_function" "restrict_ips" {
 }
 
 resource "aws_lambda_permission" "allow_cloudfront" {
-  count         = length(var.allowed_ip_addresses) > 0 ? 1 : 0
   provider      = "aws.edge"
   statement_id  = "AllowExecutionFromCloudFront"
   action        = "lambda:GetFunction"
-  function_name = aws_lambda_function.restrict_ips[count.index].function_name
+  function_name = aws_lambda_function.directory_index.function_name
   principal     = "edgelambda.amazonaws.com"
+}
+
+data "archive_file" "lambda_source" {
+  type        = "zip"
+  source_file = "${path.module}/index.js"
+  output_path = "${path.module}/index.zip"
 }
