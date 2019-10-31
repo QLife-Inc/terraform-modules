@@ -18,7 +18,7 @@ resource "aws_lambda_function" "restrict_ips" {
   function_name    = var.function_name
   role             = var.function_role_arn
   filename         = data.archive_file.lambda_source.output_path
-  source_code_hash = md5(file("${path.module}/index.js"))
+  source_code_hash = md5(data.template_file.lambda_source.rendered)
   handler          = "index.handler"
   runtime          = "nodejs8.10"
   publish          = true
