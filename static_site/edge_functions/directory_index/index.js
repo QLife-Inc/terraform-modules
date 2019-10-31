@@ -5,7 +5,7 @@ function hasTrallingSlash(uri) {
 }
 
 function hasNoExtension(uri) {
-  return !/\/[^\/]+\.[^\/.]+$/.test(request.uri);
+  return !/\/[^\/]+\.[^\/.]+$/.test(uri);
 }
 
 exports.handler = (event, _context, callback) => {

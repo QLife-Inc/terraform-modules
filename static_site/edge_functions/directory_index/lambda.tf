@@ -16,7 +16,7 @@ resource "aws_lambda_function" "directory_index" {
   function_name    = var.function_name
   role             = var.function_role_arn
   filename         = data.archive_file.lambda_source.output_path
-  source_code_hash = data.archive_file.lambda_source.output_base64sha256
+  source_code_hash = md5(file("${path.module}/index.js"))
   handler          = "index.handler"
   runtime          = "nodejs8.10"
   publish          = true
