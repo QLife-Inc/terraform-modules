@@ -25,7 +25,7 @@ resource "aws_lambda_function" "directory_index" {
   filename         = data.archive_file.lambda_source.output_path
   source_code_hash = md5(file("${path.module}/index.js"))
   handler          = "index.handler"
-  runtime          = "nodejs8.10"
+  runtime          = "nodejs10.x"
   publish          = true
   memory_size      = 128
   timeout          = 3

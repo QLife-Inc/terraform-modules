@@ -27,7 +27,7 @@ resource "aws_lambda_function" "restrict_ips" {
   filename         = data.archive_file.lambda_source.output_path
   source_code_hash = md5(data.template_file.lambda_source.rendered)
   handler          = "index.handler"
-  runtime          = "nodejs8.10"
+  runtime          = "nodejs10.x"
   publish          = true
   memory_size      = 128
   timeout          = 3
