@@ -4,21 +4,21 @@ provider "aws" {
 }
 
 resource "aws_cloudwatch_log_group" "directory_index" {
-  provider          = "aws.edge"
+  provider          = aws.edge
   name              = "/aws/lambda/us-east-1.${var.function_name}"
   retention_in_days = 7
   tags              = var.function_tags
 }
 
 resource "aws_cloudwatch_log_group" "directory_index_default" {
-  provider          = "aws.edge"
+  provider          = aws.edge
   name              = "/aws/lambda/us-east-1.${var.function_name}"
   retention_in_days = 7
   tags              = var.function_tags
 }
 
 resource "aws_lambda_function" "directory_index" {
-  provider         = "aws.edge"
+  provider         = aws.edge
   depends_on       = [aws_cloudwatch_log_group.directory_index]
   function_name    = var.function_name
   role             = var.function_role_arn
@@ -33,7 +33,7 @@ resource "aws_lambda_function" "directory_index" {
 }
 
 resource "aws_lambda_permission" "allow_cloudfront" {
-  provider      = "aws.edge"
+  provider      = aws.edge
   statement_id  = "AllowExecutionFromCloudFront"
   action        = "lambda:GetFunction"
   function_name = aws_lambda_function.directory_index.function_name

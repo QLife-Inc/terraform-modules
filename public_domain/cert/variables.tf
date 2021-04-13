@@ -1,7 +1,3 @@
-variable "cert_region" {
-  description = "証明書を発行するリージョン (必須)"
-}
-
 variable "domain_name" {
   description = "証明書の Common Name"
 }

@@ -5,7 +5,7 @@ provider "aws" {
 
 resource "aws_cloudwatch_log_group" "restrict_ips" {
   count             = length(var.allowed_ip_addresses) > 0 ? 1 : 0
-  provider          = "aws.edge"
+  provider          = aws.edge
   name              = "/aws/lambda/us-east-1.${var.function_name}"
   retention_in_days = 7
   tags              = var.function_tags
@@ -20,7 +20,7 @@ resource "aws_cloudwatch_log_group" "restrict_ips_default" {
 
 resource "aws_lambda_function" "restrict_ips" {
   count            = length(var.allowed_ip_addresses) > 0 ? 1 : 0
-  provider         = "aws.edge"
+  provider         = aws.edge
   depends_on       = [aws_cloudwatch_log_group.restrict_ips]
   function_name    = var.function_name
   role             = var.function_role_arn
@@ -36,7 +36,7 @@ resource "aws_lambda_function" "restrict_ips" {
 
 resource "aws_lambda_permission" "allow_cloudfront" {
   count         = length(var.allowed_ip_addresses) > 0 ? 1 : 0
-  provider      = "aws.edge"
+  provider      = aws.edge
   statement_id  = "AllowExecutionFromCloudFront"
   action        = "lambda:GetFunction"
   function_name = aws_lambda_function.restrict_ips[count.index].function_name

@@ -5,7 +5,6 @@ resource "aws_s3_bucket" "logs" {
   count         = var.enabled ? 1 : 0
   bucket        = var.bucket_name
   acl           = "log-delivery-write"
-  region        = var.aws_region
   tags          = var.bucket_tags
   force_destroy = var.force_destroy
 
